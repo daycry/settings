@@ -35,6 +35,13 @@ class DatabaseHandler extends BaseHandler
     private $table;
 
     /**
+     * The settings database connection
+     *
+     * @var string
+     */
+    private $group;
+
+    /**
      * Attempt to retrieve a value from the database.
      * To boost performance, all of the values are
      * read and stored in $this->settings the first
@@ -78,7 +85,7 @@ class DatabaseHandler extends BaseHandler
         // If we found it in our cache, then we need to update
         if( isset( $this->settings[ $class ][ $property ] ) )
         {
-            $result = db_connect()->table( $this->table )
+            $result = db_connect( $this->group )->table( $this->table )
                 ->where( 'class', $class )
                 ->where( 'key', $property )
                 ->update(
@@ -89,7 +96,7 @@ class DatabaseHandler extends BaseHandler
                     ]
                 );
         } else {
-            $result = db_connect()->table( $this->table )
+            $result = db_connect( $this->group )->table( $this->table )
                ->insert(
                    [
                         'class'      => $class,
@@ -131,7 +138,7 @@ class DatabaseHandler extends BaseHandler
         $this->hydrate();
 
         // Delete from persistent storage
-        $result = db_connect()->table( $this->table )
+        $result = db_connect( $this->group )->table( $this->table )
             ->where( 'class', $class )
             ->where( 'key', $property )
             ->delete();
@@ -158,12 +165,13 @@ class DatabaseHandler extends BaseHandler
         }
 
         $this->table = config( 'Settings' )->database[ 'table' ] ?? 'settings';
+        $this->group = config( 'Settings' )->database[ 'group' ] ?? 'default';
 
-        $rawValues = db_connect()->table( $this->table )->get();
+        $rawValues = db_connect( $this->group )->table( $this->table )->get();
 
         if( is_bool( $rawValues ) )
         {
-            throw new \RuntimeException( db_connect()->error()[ 'message' ] ?? 'Error reading from database.' );
+            throw new \RuntimeException( db_connect( $this->group )->error()[ 'message' ] ?? 'Error reading from database.' );
         }
 
         $rawValues = $rawValues->getResultObject();
