@@ -1,4 +1,4 @@
-<?php namespace Daycry\Twig\Commands;
+<?php namespace Daycry\Settings\Commands;
 
 use Config\Autoload;
 use CodeIgniter\CLI\CLI;
