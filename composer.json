@@ -1,0 +1,61 @@
+{
+    "name": "daycry/settings",
+    "type": "library",
+    "description": "Settings library for CodeIgniter 4",
+    "keywords": [
+        "config",
+        "codeigniter",
+        "codeigniter4",
+        "settings",
+        "database"
+        
+    ],
+    "homepage": "https://github.com/daycry/settings",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "daycry",
+            "email": "daycry9@gmail.com",
+            "homepage": "https://github.com/daycry",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0"
+    },
+    "require-dev": {
+        "codeigniter4/framework": "^4.0.2",
+        "fakerphp/faker": "^1.9",
+        "mockery/mockery": "^1.0",
+        "nexusphp/tachycardia": "^1.0",
+        "php-coveralls/php-coveralls": "^2.4",
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^9.0",
+        "squizlabs/php_codesniffer": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Daycry\\Settings\\": "src"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests",
+            "Tests\\Support\\": "tests/_support"
+        }
+    },
+    "prefer-stable": true,
+    "scripts": {
+        "post-update-cmd": [
+            "bash -c \"if [ -f admin/setup.sh ]; then bash admin/setup.sh; fi\""
+        ],
+        "analyze": "phpstan analyze",
+        "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
+        "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
+        "style": "phpcbf --standard=PSR12 tests/ src/",
+        "test": "phpunit"
+    }
+}
