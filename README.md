@@ -1,12 +1,9 @@
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?business=SYC5XDT23UZ5G&no_recurring=0&item_name=Thank+you%21&currency_code=EUR)
+
 # CodeIgniter 4 Settings
 
 Provides database storage and retrieval of application settings, with a fallback to the 
 config classes.
-
-[![](https://github.com/codeigniter4/settings/workflows/PHPUnit/badge.svg)](https://github.com/codeigniter4/settings/actions/workflows/test.yml)
-[![](https://github.com/codeigniter4/settings/workflows/PHPStan/badge.svg)](https://github.com/codeigniter4/settings/actions/workflows/analyze.yml)
-[![](https://github.com/codeigniter4/settings/workflows/Deptrac/badge.svg)](https://github.com/codeigniter4/settings/actions/workflows/inspect.yml)
-[![Coverage Status](https://coveralls.io/repos/github/codeigniter4/settings/badge.svg?branch=develop)](https://coveralls.io/github/codeigniter4/settings?branch=develop)
 
 ## Quick Start
 
