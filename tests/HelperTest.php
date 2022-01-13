@@ -1,69 +1,61 @@
 <?php
 
-namespace CodeIgniter4\Tests;
+namespace Tests;
 
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Test\DatabaseTestTrait;
-use Dayrcy\Settings\Settings;
+use Daycry\Settings\Settings;
 use Tests\Support\TestCase;
 
-class HelperTest extends TestCase
+/**
+ * @internal
+ */
+final class HelperTest extends TestCase
 {
     use DatabaseTestTrait;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        helper( [ 'setting' ] );
+        helper(['setting']);
     }
 
     public function testReturnsServiceByDefault()
     {
-        $this->assertInstanceOf( Settings::class, setting() );
+        $this->assertInstanceOf(Settings::class, setting());
     }
 
     public function testThrowsExceptionWithInvalidField()
     {
-        $this->expectException( \RuntimeException::class );
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('$key must contain both the class and field name, i.e. Foo.bar');
 
-        setting( 'Foobar' );
+        setting('Foobar');
+    }
+
+    public function testSetsNull()
+    {
+        setting('Foo.bam', null);
+
+        $this->assertNull(service('settings')->get('Foo.bam'));
+        $this->assertNull(setting('Foo.bam'));
     }
 
     public function testReturnsValueDotArray()
     {
-        $this->hasInDatabase( $this->table, [
-            'class'      => 'Foo',
-            'key'        => 'bar',
-            'value'      => 'baz',
-            'type'       => 'string',
-            'created_at' => Time::now()->toDateTimeString(),
-            'updated_at' => Time::now()->toDateTimeString(),
-        ]);
+        service('settings')->set('Foo.bar', 'baz');
 
-        $this->assertEquals( 'baz', setting( 'Foo.bar' ) );
+        $this->assertSame('baz', setting('Foo.bar'));
     }
 
     public function testSettingValueDotArray()
     {
-        $this->hasInDatabase( $this->table, [
-            'class'      => 'Foo',
-            'key'        => 'bar',
-            'value'      => 'baz',
-            'type'       => 'string',
-            'created_at' => Time::now()->toDateTimeString(),
-            'updated_at' => Time::now()->toDateTimeString(),
-        ]);
+        service('settings')->set('Foo.bar', 'baz');
 
-        setting( 'Foo.bar', false );
+        setting('Foo.bar', false);
 
-        $this->seeInDatabase( $this->table, [
-            'class' => 'Foo',
-            'key'   => 'bar',
-            'value' => '0',
-            'type'  => 'boolean',
-        ]);
-
-        $this->assertSame( false, setting( 'Foo.bar' ) );
+        $this->assertFalse(service('settings')->get('Foo.bar'));
+        $this->assertFalse(setting('Foo.bar'));
     }
 }

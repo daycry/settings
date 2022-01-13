@@ -2,6 +2,7 @@
 
 namespace Daycry\Settings\Config;
 
+use Daycry\Settings\Handlers\ArrayHandler;
 use Daycry\Settings\Handlers\DatabaseHandler;
 use CodeIgniter\Config\BaseConfig;
 
@@ -15,6 +16,14 @@ class Settings extends BaseConfig
      * @var string[]
      */
     public $handlers = [ 'database' ];
+
+    /**
+     * Array handler settings.
+     */
+    public $array = [
+        'class'     => ArrayHandler::class,
+        'writeable' => true,
+    ];
 
     /**
      * Database handler settings.

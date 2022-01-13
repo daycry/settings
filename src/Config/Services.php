@@ -3,8 +3,9 @@
 namespace Daycry\Settings\Config;
 
 use CodeIgniter\Config\BaseService;
+use CodeIgniter\Config\BaseConfig;
 use Daycry\Settings\Settings;
-use Config\Settings as SettingsConfig;
+
 
 /**
  * Services Configuration file.
@@ -28,7 +29,7 @@ class Services extends BaseService
      *
      * @return Settings
      */
-    public static function settings( SettingsConfig $config = null, Bool $getShared = true ) : Settings
+    public static function settings( BaseConfig $config = null, Bool $getShared = true ) : Settings
     {
         if( $getShared )
         {
