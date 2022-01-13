@@ -2,29 +2,36 @@
 
 namespace Tests\Support;
 
+use Daycry\Settings\Handlers\ArrayHandler;
+use Daycry\Settings\Settings;
 use CodeIgniter\Test\CIUnitTestCase;
+use Config\Services;
 use Nexus\PHPUnit\Extension\Expeditable;
 
 abstract class TestCase extends CIUnitTestCase
 {
     use Expeditable;
 
-    protected $namespace = 'Daycry\Settings';
-    protected $refresh   = true;
+    /**
+     * @var Settings
+     */
+    protected $settings;
 
     /**
-     * @var string
+     * Sets up the ArrayHandler for faster & easier tests.
      */
-    protected $table;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->table = config( 'Settings' )->database[ 'table' ];
+        $config           = config('Settings');
+        $config->handlers = ['array'];
+        $this->settings   = new Settings($config);
+
+        Services::injectMock('settings', $this->settings);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
 
