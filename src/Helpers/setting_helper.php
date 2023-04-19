@@ -1,7 +1,6 @@
 <?php
 
-if( !function_exists( 'setting' ) )
-{
+if(!function_exists('setting')) {
     /**
      * Provides a convenience interface to the Settings service.
      *
@@ -10,19 +9,17 @@ if( !function_exists( 'setting' ) )
      *
      * @return mixed
      */
-    function setting( string $key = null, $value = null )
+    function setting(string $key = null, $value = null)
     {
-        $setting = service( 'settings' );
+        $setting = service('settings');
 
-        if( empty( $key ) )
-        {
+        if(empty($key)) {
             return $setting;
         }
 
         // Getting the value?
-        if( $value === null )
-        {
-            return $setting->get( $key );
+        if($value === null) {
+            return $setting->get($key);
         }
 
         // Setting the value

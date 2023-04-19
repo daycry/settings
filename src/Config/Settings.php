@@ -31,7 +31,7 @@ class Settings extends BaseConfig
     public $database = [
         'class' => DatabaseHandler::class,
         'table' => 'settings',
-        'group' => 'default', 
+        'group' => null,
         'writeable' => true
     ];
 }

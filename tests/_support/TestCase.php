@@ -15,7 +15,7 @@ abstract class TestCase extends CIUnitTestCase
     /**
      * @var Settings
      */
-    protected $settings;
+    protected Settings $settings;
 
     /**
      * Sets up the ArrayHandler for faster & easier tests.

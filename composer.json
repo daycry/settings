@@ -24,14 +24,9 @@
         "php": "^7.3 || ^8.0"
     },
     "require-dev": {
-        "codeigniter4/framework": "^4.0.2",
-        "fakerphp/faker": "^1.9",
-        "mockery/mockery": "^1.0",
-        "nexusphp/tachycardia": "^1.0",
-        "php-coveralls/php-coveralls": "^2.4",
-        "phpstan/phpstan": "^0.12",
-        "phpunit/phpunit": "^9.0",
-        "squizlabs/php_codesniffer": "^3.3"
+        "codeigniter4/framework": "^4",
+        "codeigniter4/devkit": "^1.0",
+        "rector/rector": "0.15.24"
     },
     "autoload": {
         "psr-4": {
@@ -47,15 +42,43 @@
             "Tests\\Support\\": "tests/_support"
         }
     },
+    "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
     "scripts": {
         "post-update-cmd": [
             "bash -c \"if [ -f admin/setup.sh ]; then bash admin/setup.sh; fi\""
         ],
-        "analyze": "phpstan analyze",
+        "analyze": [
+            "phpstan analyze",
+            "psalm",
+            "rector process --dry-run"
+        ],
+        "sa": "@analyze",
+        "ci": [
+            "Composer\\Config::disableProcessTimeout",
+            "@cs",
+            "@deduplicate",
+            "@analyze",
+            "@inspect",
+            "@test"
+        ],
+        "cs": [
+            "php-cs-fixer fix src --ansi --verbose --dry-run --diff",
+            "php-cs-fixer fix tests --ansi --verbose --dry-run --diff"
+        ],
+        "cs-fix": [
+            "php-cs-fixer fix src --ansi --verbose --diff --using-cache=yes",
+            "php-cs-fixer fix tests --ansi --verbose --diff --using-cache=yes"
+        ],
+        "style": "@cs-fix",
+        "deduplicate": "php phpcpd.phar src/",
         "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
         "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
-        "style": "phpcbf --standard=PSR12 tests/ src/",
         "test": "phpunit"
     }
 }

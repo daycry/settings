@@ -6,7 +6,6 @@ use CodeIgniter\Config\BaseService;
 use CodeIgniter\Config\BaseConfig;
 use Daycry\Settings\Settings;
 
-
 /**
  * Services Configuration file.
  *
@@ -29,15 +28,14 @@ class Services extends BaseService
      *
      * @return Settings
      */
-    public static function settings( BaseConfig $config = null, Bool $getShared = true ) : Settings
+    public static function settings(BaseConfig $config = null, Bool $getShared = true): Settings
     {
-        if( $getShared )
-        {
-            return static::getSharedInstance( 'settings', $config );
+        if($getShared) {
+            return static::getSharedInstance('settings', $config);
         }
 
-        $config = $config ?? config( 'Settings' );
+        $config = $config ?? config('Settings');
 
-        return new Settings( $config );
+        return new Settings($config);
     }
 }

@@ -4,6 +4,7 @@ namespace Daycry\Settings;
 
 use CodeIgniter\Config\BaseConfig;
 
+use Daycry\Settings\Config\Settings as SettingsConfig;
 use Daycry\Settings\Handlers\BaseHandler;
 use InvalidArgumentException;
 use RuntimeException;
@@ -20,19 +21,19 @@ class Settings
      *
      * @var BaseHandler[]
      */
-    private $handlers = [];
+    private array $handlers = [];
 
     /**
      * An array of the config options for each handler.
      *
      * @var array<string,array<string,mixed>>
      */
-    private $options;
+    private ?array $options;
 
     /**
      * Grabs instances of our handlers.
      */
-    public function __construct(BaseConfig $config)
+    public function __construct(SettingsConfig $config)
     {
         foreach ($config->handlers as $handler) {
             $class = $config->{$handler}['class'] ?? null;

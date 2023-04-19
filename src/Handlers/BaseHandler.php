@@ -2,6 +2,8 @@
 
 namespace Daycry\Settings\Handlers;
 
+use RuntimeException;
+
 abstract class BaseHandler
 {
     /**
@@ -17,7 +19,7 @@ abstract class BaseHandler
      *
      * @return mixed
      */
-    abstract public function get( String $class, String $property );
+    abstract public function get(string $class, string $property, ?string $context = null);
 
     /**
      * If the Handler supports saving values, it
@@ -29,9 +31,9 @@ abstract class BaseHandler
      *
      * @return mixed
      */
-    public function set( String $class, String $property, $value = null )
+    public function set(string $class, string $property, $value = null, ?string $context = null)
     {
-        throw new \RuntimeException( 'Set method not implemented for current Settings handler.' );
+        throw new RuntimeException('Set method not implemented for current Settings handler.');
     }
 
     /**
@@ -48,7 +50,7 @@ abstract class BaseHandler
     {
         throw new RuntimeException('Forget method not implemented for current Settings handler.');
     }
-    
+
     /**
      * Takes care of converting some item types so they can be safely
      * stored and re-hydrated into the config files.
@@ -57,16 +59,14 @@ abstract class BaseHandler
      *
      * @return string|mixed
      */
-    protected function prepareValue( $value )
+    protected function prepareValue($value)
     {
-        if( is_bool( $value ) )
-        {
+        if(is_bool($value)) {
             return (int)$value;
         }
 
-        if( is_array( $value ) || is_object( $value ) )
-        {
-            return serialize( $value );
+        if(is_array($value) || is_object($value)) {
+            return serialize($value);
         }
 
         return $value;
@@ -81,15 +81,14 @@ abstract class BaseHandler
      *
      * @return boolean|mixed
      */
-    protected function parseValue( $value, String $type )
+    protected function parseValue($value, String $type)
     {
         // Serialized?
-        if( $this->isSerialized( $value ) )
-        {
-            $value = unserialize( $value );
+        if($this->isSerialized($value)) {
+            $value = unserialize($value);
         }
 
-        settype( $value, $type );
+        settype($value, $type);
 
         return $value;
     }
@@ -104,90 +103,78 @@ abstract class BaseHandler
      *
      * @return boolean
      */
-    protected function isSerialized( $data, $strict = true ): Bool
+    protected function isSerialized($data, $strict = true): Bool
     {
         // If it isn't a string, it isn't serialized.
-        if( !is_string( $data ) )
-        {
+        if(!is_string($data)) {
             return false;
         }
 
-        $data = trim( $data );
+        $data = trim($data);
 
-        if( 'N;' === $data )
-        {
+        if('N;' === $data) {
             return true;
         }
 
-        if( strlen( $data ) < 4 )
-        {
+        if(strlen($data) < 4) {
             return false;
         }
 
-        if( ':' !== $data[ 1 ] )
-        {
+        if(':' !== $data[ 1 ]) {
             return false;
         }
 
-        if( $strict )
-        {
-            $lastc = substr( $data, -1 );
+        if($strict) {
+            $lastc = substr($data, -1);
 
-            if( ';' !== $lastc && '}' !== $lastc )
-            {
+            if(';' !== $lastc && '}' !== $lastc) {
                 return false;
             }
 
         } else {
 
-            $semicolon = strpos( $data, ';' );
-            $brace     = strpos( $data, '}' );
-            
+            $semicolon = strpos($data, ';');
+            $brace     = strpos($data, '}');
+
             // Either ; or } must exist.
-            if( false === $semicolon && false === $brace )
-            {
+            if(false === $semicolon && false === $brace) {
                 return false;
             }
 
             // But neither must be in the first X characters.
-            if( false !== $semicolon && $semicolon < 3 )
-            {
+            if(false !== $semicolon && $semicolon < 3) {
                 return false;
             }
 
-            if( false !== $brace && $brace < 4 )
-            {
+            if(false !== $brace && $brace < 4) {
                 return false;
             }
         }
 
         $token = $data[ 0 ];
-        switch( $token )
-        {
+        switch($token) {
             case 's':
-                if( $strict )
-                {
-                    if( '"' !== substr( $data, -2, 1 ) )
-                    {
+                if($strict) {
+                    if('"' !== substr($data, -2, 1)) {
                         return false;
                     }
 
-                } elseif( false === strpos( $data, '"' ) )
-                {
+                } elseif(false === strpos($data, '"')) {
                     return false;
                 }
 
                 // Or else fall through.
+                // no break
             case 'a':
             case 'O':
-                return (bool) preg_match( "/^{$token}:[0-9]+:/s", $data );
+                return (bool) preg_match("/^{$token}:[0-9]+:/s", $data);
             case 'b':
             case 'i':
             case 'd':
                 $end = $strict ? '$' : '';
-                return (bool) preg_match( "/^{$token}:[0-9.E+-]+;$end/", $data );
+                return (bool) preg_match("/^{$token}:[0-9.E+-]+;$end/", $data);
         }
-        
+
         return false;
     }
 }

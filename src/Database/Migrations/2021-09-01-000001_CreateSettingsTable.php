@@ -38,11 +38,11 @@ class CreateSettingsTable extends Migration
             ]
         ]);
 
-        $this->forge->createTable( config( 'Settings' )->database[ 'table' ], true );
+        $this->forge->createTable(config('Settings')->database[ 'table' ], true);
     }
 
     public function down()
     {
-        $this->forge->dropTable( config( 'Settings' )->database[ 'table' ] );
+        $this->forge->dropTable(config('Settings')->database[ 'table' ]);
     }
 }
