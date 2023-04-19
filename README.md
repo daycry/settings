@@ -5,6 +5,12 @@
 Provides database storage and retrieval of application settings, with a fallback to the 
 config classes.
 
+[![Build Status](https://github.com/daycry/settings/workflows/PHP%20Tests/badge.svg)](https://github.com/daycry/settings/actions?query=workflow%3A%22PHP+Tests%22)
+[![Downloads](https://poser.pugx.org/daycry/settings/downloads)](https://packagist.org/packages/daycry/settings)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/daycry/settings)](https://packagist.org/packages/daycry/settings)
+[![GitHub stars](https://img.shields.io/github/stars/daycry/settings)](https://packagist.org/packages/daycry/settings)
+[![GitHub license](https://img.shields.io/github/license/daycry/settings)](https://github.com/daycry/settings/blob/master/LICENSE)
+
 ## Quick Start
 
 1. Install with Composer: `> composer require daycry/settings`
