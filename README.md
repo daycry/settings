@@ -91,14 +91,14 @@ will be converted back into a boolean when retrieved. Arrays and objects are ser
 when retrieved. 
 
 ```php
-service('setting')->set('App.siteName', 'My Great Site');
+service('settings')->set('App.siteName', 'My Great Site');
 ```
 
 You can delete a value from the persistent storage with the `forget()` method. Since it is removed from the storage,
 it effectively resets itself back to the default value in config file, if any.
 
 ```php
-service('setting')->forget('App.siteName')
+service('settings')->forget('App.siteName')
 ```
 
 ### Using the Helper
