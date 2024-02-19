@@ -28,7 +28,7 @@ class Settings
      *
      * @var array<string,array<string,mixed>>
      */
-    private ?array $options;
+    private ?array $options = null;
 
     /**
      * Grabs instances of our handlers.
@@ -57,7 +57,7 @@ class Settings
         [$class, $property, $config] = $this->prepareClassAndProperty($key);
 
         // Check each of our handlers
-        foreach ($this->handlers as $name => $handler) {
+        foreach ($this->handlers as $handler) {
             if ($handler->has($class, $property, $context)) {
                 return $handler->get($class, $property, $context);
             }
@@ -100,6 +100,19 @@ class Settings
 
         foreach ($this->getWriteHandlers() as $handler) {
             $handler->forget($class, $property, $context);
+        }
+    }
+
+    /**
+     * Removes all settings from the persistent storage,
+     * Useful during testing. Use with caution.
+     *
+     * @return void
+     */
+    public function flush()
+    {
+        foreach ($this->getWriteHandlers() as $handler) {
+            $handler->flush();
         }
     }
 
