@@ -7,6 +7,14 @@ use Config\Database;
 
 class CreateSettingsTable extends Migration
 {
+    public function __construct(?Forge $forge = null)
+    {
+        $this->config  = config('Settings');
+        $this->DBGroup = $this->config->database['group'] ?? null;
+
+        parent::__construct($forge);
+    }
+    
     public function up()
     {
         $this->forge->addField('id');
