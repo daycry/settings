@@ -2,7 +2,9 @@
 
 namespace Daycry\Settings\Database\Migrations;
 
+use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Settings\Config\Settings;
 
 class AddContextColumn extends Migration
 {
