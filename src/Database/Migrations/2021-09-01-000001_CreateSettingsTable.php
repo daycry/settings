@@ -9,6 +9,8 @@ use Config\Database;
 
 class CreateSettingsTable extends Migration
 {
+    private Settings $config;
+    
     public function __construct(?Forge $forge = null)
     {
         $this->config  = config('Settings');
