@@ -2,7 +2,9 @@
 
 namespace Daycry\Settings\Database\Migrations;
 
+use CodeIgniter\Database\Forge;
 use CodeIgniter\Database\Migration;
+use Daycry\Settings\Config\Settings;
 use Config\Database;
 
 class CreateSettingsTable extends Migration
